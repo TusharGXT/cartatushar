@@ -22,30 +22,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 .context-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
 .context-card p { font-family: 'Lora', serif; font-size: 15px; line-height: 1.75; }
 .context-card em { font-style: italic; color: var(--ink-light); }
-
-/* imagen vertical de celular: centrada, ancho limitado, altura proporcional */
-.kahoot-img-wrap {
-  border-radius: 10px;
-  overflow: hidden;
-  border: 0.5px solid var(--border);
-  background: var(--accent-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 340px;
-}
-.kahoot-img-wrap img {
-  width: auto;
-  max-width: 100%;
-  max-height: 340px;
-  object-fit: contain;
-  display: block;
-  border-radius: 8px;
-}
+.kahoot-img-wrap { border-radius: 10px; overflow: hidden; border: 0.5px solid var(--border); background: var(--accent-light); display: flex; align-items: center; justify-content: center; max-height: 340px; }
+.kahoot-img-wrap img { width: auto; max-width: 100%; max-height: 340px; object-fit: contain; display: block; border-radius: 8px; }
 .img-placeholder { display: none; flex-direction: column; align-items: center; gap: 8px; color: var(--accent); opacity: 0.5; padding: 2rem; }
 .img-placeholder svg { width: 32px; height: 32px; }
 .img-placeholder span { font-size: 12px; }
-
 .form-card { background: var(--warm-white); border: 0.5px solid var(--border); border-radius: 16px; padding: 1.75rem; display: flex; flex-direction: column; gap: 1.5rem; }
 .form-card h2 { font-family: 'Lora', serif; font-size: 18px; font-weight: 400; line-height: 1.4; }
 .options { display: flex; flex-direction: column; gap: 10px; }
@@ -71,6 +52,52 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 .success-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 20px; margin-bottom: 4px; }
 .success-card p { font-family: 'Lora', serif; font-size: 15px; color: var(--ink-light); line-height: 1.6; max-width: 320px; }
 .footer { font-size: 12px; color: var(--ink-light); opacity: 0.4; text-align: center; }
+
+/* ── Scroll hint lateral derecho ── */
+.scroll-hint {
+  position: fixed;
+  right: 10px;
+  bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  z-index: 99;
+}
+.scroll-hint.hidden { opacity: 0; }
+.scroll-hint span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.8;
+  margin-bottom: 2px;
+}
+.scroll-arrow {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 6px;
+  box-shadow: 0 2px 12px rgba(42,37,32,0.10);
+}
+.scroll-arrow svg {
+  width: 26px;
+  height: 26px;
+  color: var(--accent);
+}
+.scroll-arrow svg:nth-child(1) { animation: fadeChev 1s ease infinite 0s; }
+.scroll-arrow svg:nth-child(2) { animation: fadeChev 1s ease infinite 0.18s; }
+.scroll-arrow svg:nth-child(3) { animation: fadeChev 1s ease infinite 0.36s; }
+@keyframes fadeChev {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 1; }
+}
 </style>
 </head>
 <body>
@@ -128,7 +155,29 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
   <p class="footer">Solo se puede responder una vez.</p>
 
 </div>
+
+<!-- SCROLL HINT lateral -->
+<div class="scroll-hint" id="scrollHint">
+  <span>scroll</span>
+  <div class="scroll-arrow">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </div>
+</div>
+
 <script>
+  var hint = document.getElementById('scrollHint');
+  window.addEventListener('scroll', function() {
+    hint.classList.toggle('hidden', window.scrollY > 80);
+  }, { passive: true });
+
   var PK = 'r2PRlY-jUSs7rUcz-';
   var SID = 'service_5vqeehr';
   var TID = 'template_6n341qv';
